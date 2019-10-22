@@ -1,5 +1,7 @@
 package model.data_structures;
 
+//basado en https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/RedBlackBST.java
+
 public class NodoRojoNegro <K extends Comparable<K>, V>
 {
 	public K key;

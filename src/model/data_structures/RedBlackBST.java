@@ -3,6 +3,7 @@ package model.data_structures;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+//basado en https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/RedBlackBST.java
 public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalanceado<K, V>
 {
 	private static final boolean RED   = true;
