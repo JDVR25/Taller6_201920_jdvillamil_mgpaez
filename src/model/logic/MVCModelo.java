@@ -125,7 +125,6 @@ public class MVCModelo
 		reader.beginObject();
 		while (reader.hasNext())
 		{
-			reader.beginObject();
 			String name = reader.nextName();
 			if (name.equals("type") && reader.nextString().equals("Feature"))
 			{
