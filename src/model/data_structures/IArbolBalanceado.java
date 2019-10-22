@@ -20,6 +20,8 @@ public interface IArbolBalanceado <K extends Comparable<K>, V>
 	
 	public K min();
 	
+	public K max();
+	
 	public Iterator <K> keys();
 	
 	public Iterator<V> valuesInRange(K init, K end);

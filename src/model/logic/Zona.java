@@ -1,5 +1,7 @@
 package model.logic;
 
+import model.data_structures.ListaSencillamenteEncadenada;
+
 public class Zona
 {
 	private String nombre;
@@ -10,9 +12,9 @@ public class Zona
 	
 	private int id;
 	
-	private Punto[] coordenadas;
+	private ListaSencillamenteEncadenada<Punto> coordenadas;
 	
-	public Zona(String pNombre, long pPerimetro, long pArea, int pId, Punto[] pCoord)
+	public Zona(String pNombre, long pPerimetro, long pArea, int pId, ListaSencillamenteEncadenada<Punto>  pCoord)
 	{
 		nombre = pNombre;
 		
@@ -25,11 +27,11 @@ public class Zona
 		coordenadas = pCoord;
 	}
 
-	public Punto[] getCoordenadas() {
+	public ListaSencillamenteEncadenada<Punto>  getCoordenadas() {
 		return coordenadas;
 	}
 
-	public void setCoordenadas(Punto[] coordenadas) {
+	public void setCoordenadas(ListaSencillamenteEncadenada<Punto>  coordenadas) {
 		this.coordenadas = coordenadas;
 	}
 
