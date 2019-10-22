@@ -86,9 +86,12 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
     private V get(Node x, K key) {
         while (x != null) {
             int cmp = key.compareTo(x.key);
-            if      (cmp < 0) x = x.left;
-            else if (cmp > 0) x = x.right;
-            else              return x.val;
+            if (cmp < 0) 
+            	x = x.left;
+            else if (cmp > 0) 
+            	x = x.right;
+            else              
+            	return x.val;
         }
         return null;
     }
@@ -100,7 +103,8 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
      *     {@code false} otherwise
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
-    public boolean contains(K key) {
+    public boolean contains(K key) 
+    {
         return get(key) != null;
     }
 
@@ -379,7 +383,12 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
      */
     public int getHeight(K key)
     {
-    	int height 
+    	int a = -1; 
+    	if (this.contains(key) == true)
+    	{
+    		height(root); 
+    	}
+    	return a; 
     }
 
    /***************************************************************************
