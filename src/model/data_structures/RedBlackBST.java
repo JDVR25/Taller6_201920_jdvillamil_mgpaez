@@ -69,11 +69,6 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 	{
 		if (key == null)
 			throw new IllegalArgumentException("first argument to put() is null");
-		if (val == null) 
-		{
-			delete(key);
-			return;
-		}
 
 		root = put(root, key, val);
 		root.color = BLACK;
@@ -101,105 +96,6 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 		h.size = size(h.left) + size(h.right) + 1;
 
 		return h;
-	}
-
-	public void deleteMin() 
-	{
-		if (isEmpty()) 
-			throw new NoSuchElementException("BST underflow");
-
-		if (!isRed(root.left) && !isRed(root.right))
-			root.color = RED;
-
-		root = deleteMin(root);
-		if (!isEmpty())
-			root.color = BLACK;
-	}
-
-	private NodoRojoNegro<K, V> deleteMin(NodoRojoNegro<K, V> h)
-	{ 
-		if (h.left == null)
-			return null;
-
-		if (!isRed(h.left) && !isRed(h.left.left))
-			h = moveRedLeft(h);
-
-		h.left = deleteMin(h.left);
-		return balance(h);
-	}
-
-	public void deleteMax()
-	{
-		if (isEmpty())
-			throw new NoSuchElementException("BST underflow");
-
-		if (!isRed(root.left) && !isRed(root.right))
-			root.color = RED;
-
-		root = deleteMax(root);
-		if (!isEmpty()) 
-			root.color = BLACK;
-	}
-
-	private NodoRojoNegro<K, V> deleteMax(NodoRojoNegro<K, V> h)
-	{ 
-		if (isRed(h.left))
-			h = rotateRight(h);
-
-		if (h.right == null)
-			return null;
-
-		if (!isRed(h.right) && !isRed(h.right.left))
-			h = moveRedRight(h);
-
-		h.right = deleteMax(h.right);
-
-		return balance(h);
-	}
-
-	public void delete(K key) 
-	{ 
-		if (key == null) 
-			throw new IllegalArgumentException("argument to delete() is null");
-		if (!contains(key)) return;
-
-		if (!isRed(root.left) && !isRed(root.right))
-			root.color = RED;
-
-		root = delete(root, key);
-		if (!isEmpty()) root.color = BLACK;
-	}
-
-	// delete the key-value pair with the given key rooted at h
-	private NodoRojoNegro<K, V> delete(NodoRojoNegro<K, V> h, K key) 
-	{ 
-		
-		if (key.compareTo(h.key) < 0) 
-		{
-			if (!isRed(h.left) && !isRed(h.left.left))
-				h = moveRedLeft(h);
-			h.left = delete(h.left, key);
-		}
-		else
-		{
-			if (isRed(h.left))
-				h = rotateRight(h);
-			if (key.compareTo(h.key) == 0 && (h.right == null))
-				return null;
-			if (!isRed(h.right) && !isRed(h.right.left))
-				h = moveRedRight(h);
-			if (key.compareTo(h.key) == 0) 
-			{
-				NodoRojoNegro<K, V> x = min(h.right);
-				h.key = x.key;
-				h.val = x.val;
-
-				h.right = deleteMin(h.right);
-			}
-			else
-				h.right = delete(h.right, key);
-		}
-		return balance(h);
 	}
 
 	private NodoRojoNegro<K, V> rotateRight(NodoRojoNegro<K, V> h) 
@@ -233,43 +129,7 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 		h.right.color = !h.right.color;
 	}
 
-	private NodoRojoNegro<K, V> moveRedLeft(NodoRojoNegro<K, V> h) 
-	{
-		flipColors(h);
-		if (isRed(h.right.left)) 
-		{ 
-			h.right = rotateRight(h.right);
-			h = rotateLeft(h);
-			flipColors(h);
-		}
-		return h;
-	}
-
-	private NodoRojoNegro<K, V> moveRedRight(NodoRojoNegro<K, V> h)
-	{
-		flipColors(h);
-		if (isRed(h.left.left)) 
-		{ 
-			h = rotateRight(h);
-			flipColors(h);
-		}
-		return h;
-	}
-
-	private NodoRojoNegro<K, V> balance(NodoRojoNegro<K, V> h) 
-	{
-		if (isRed(h.right))        
-			h = rotateLeft(h);
-		if (isRed(h.left) && isRed(h.left.left))
-			h = rotateRight(h);
-		if (isRed(h.left) && isRed(h.right))  
-			flipColors(h);
-
-		h.size = size(h.left) + size(h.right) + 1;
-		return h;
-	}
-
-	public int getHeight()
+	public int height()
 	{
 		return height(root);
 	}
@@ -409,7 +269,7 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 	{
 		if (isEmpty())
 			return new ListaSencillamenteEncadenada<K>().iterator();
-		return keys(min(), max());
+		return keysInRange(min(), max());
 	}
 
 	public Iterator<K> keysInRange(K lo, K hi) 
@@ -452,7 +312,7 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 			return rank(hi) - rank(lo);
 	}
 
-	private boolean check()
+	public boolean check()
 	{
 		if (!isBST())            
 			System.out.println("Not in symmetric order");
@@ -550,15 +410,57 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 	@Override
 	public int getHeight(K key)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		int alt = -1;
+		if(contains(key))
+		{
+			alt = getHeight(key, root, false);
+		}
+		return alt;
+	}
+
+	private int getHeight(K key, NodoRojoNegro<K, V> x, boolean find)
+	{
+		int alt = -1;
+		if(x != null && !find)
+		{
+			int cmp = key.compareTo(x.key);
+			if      (cmp < 0)
+				alt = 1 + getHeight(key, x.left, find);
+			else if (cmp > 0) 
+				alt = 1 + getHeight(key, x.right, find);
+			else 
+			{
+				find = true;
+				alt = 1;
+			}
+		}
+		return alt;
 	}
 
 	@Override
-	public Iterator<V> valuesInRange(K init, K end) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Iterator<V> valuesInRange(K lo, K hi)
+	{
+		if (lo == null)
+			throw new IllegalArgumentException("first argument to keys() is null");
+		if (hi == null)
+			throw new IllegalArgumentException("second argument to keys() is null");
 
+		ListaSencillamenteEncadenada<V> lista = new ListaSencillamenteEncadenada<V>();
+		values(root, lista, lo, hi);
+		return lista.iterator();
+	}
+	
+	private void values(NodoRojoNegro<K, V> x, ListaSencillamenteEncadenada<V> lista, K lo, K hi) { 
+		if (x == null) 
+			return; 
+		int cmplo = lo.compareTo(x.key); 
+		int cmphi = hi.compareTo(x.key); 
+		if (cmplo < 0) 
+			values(x.left, lista, lo, hi); 
+		if (cmplo <= 0 && cmphi >= 0) 
+			lista.addLast(x.val); 
+		if (cmphi > 0)
+			values(x.right, lista, lo, hi); 
+	}
 }
 
