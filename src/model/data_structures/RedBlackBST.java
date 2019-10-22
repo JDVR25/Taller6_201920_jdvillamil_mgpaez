@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.NoSuchElementException;
 
-public class ArbolRojoNegro <K extends Comparable<K>, V> implements IArbolBalanceado<K, V>
+public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalanceado<K, V>
 {
 	public static final boolean RED   = true;
     public static final boolean BLACK = false;
@@ -28,7 +28,9 @@ public class ArbolRojoNegro <K extends Comparable<K>, V> implements IArbolBalanc
     /**
      * Initializes an empty symbol table.
      */
-    public ArbolRojoNegro() {
+    public RedBlackBST() 
+    {
+    	
     }
 
    /***************************************************************************
@@ -350,12 +352,34 @@ public class ArbolRojoNegro <K extends Comparable<K>, V> implements IArbolBalanc
      * Returns the height of the BST (for debugging).
      * @return the height of the BST (a 1-node tree has height 0)
      */
-    public int height() {
+    public int height() 
+    {
         return height(root);
     }
-    private int height(Node x) {
-        if (x == null) return -1;
+    
+    /**
+     * Retorna la altura del arbol
+     * @param x nodo.
+     * @return la altura del arbol
+     */
+    private int height(Node x) 
+    {
+        if (x == null) 
+        	
+        	return -1;
+        
         return 1 + Math.max(height(x.left), height(x.right));
+    }
+    
+    /**
+     * Retorna la altura del camino desde la raiz para llegar a la llave key (si la llave existe). 
+     * Retorna valor â€“1 si la llave No existe.
+     * @param key. La llave
+     * @return la altura del camino desde la raiz, o -1 si no existe.
+     */
+    public int getHeight(K key)
+    {
+    	int height 
     }
 
    /***************************************************************************
@@ -456,7 +480,7 @@ public class ArbolRojoNegro <K extends Comparable<K>, V> implements IArbolBalanc
      * @param  k the order statistic
      * @return the key in the symbol table of rank {@code k}
      * @throws IllegalArgumentException unless {@code k} is between 0 and
-     *        <em>n</em>–1
+     *        <em>n</em>ï¿½1
      */
     public K select(int k) {
         if (k < 0 || k >= size()) {
