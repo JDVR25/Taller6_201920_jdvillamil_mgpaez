@@ -1,5 +1,6 @@
 package model.data_structures;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalanceado<K, V>
@@ -268,7 +269,7 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 		return h;
 	}
 
-	public int height()
+	public int getHeight()
 	{
 		return height(root);
 	}
@@ -404,14 +405,14 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 	} 
 
 
-	public Iterable<K> keys() 
+	public Iterator<K> keys() 
 	{
 		if (isEmpty())
-			return new ListaSencillamenteEncadenada<K>();
+			return new ListaSencillamenteEncadenada<K>().iterator();
 		return keys(min(), max());
 	}
 
-	public Iterable<K> keys(K lo, K hi) 
+	public Iterator<K> keysInRange(K lo, K hi) 
 	{
 		if (lo == null)
 			throw new IllegalArgumentException("first argument to keys() is null");
@@ -420,7 +421,7 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 
 		ListaSencillamenteEncadenada<K> lista = new ListaSencillamenteEncadenada<K>();
 		keys(root, lista, lo, hi);
-		return lista;
+		return lista.iterator();
 	} 
 
 	private void keys(NodoRojoNegro<K, V> x, ListaSencillamenteEncadenada<K> lista, K lo, K hi) { 
@@ -499,9 +500,13 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 		for (int i = 0; i < size(); i++)
 			if (i != rank(select(i))) 
 				return false;
-		for (K key : keys())
+		Iterator<K> it = keys();
+		while (it.hasNext())
+		{
+			K key = it.next();
 			if (key.compareTo(select(rank(key))) != 0) 
 				return false;
+		}
 		return true;
 	}
 
@@ -540,7 +545,20 @@ public class RedBlackBST <K extends Comparable<K>, V> implements IArbolBalancead
 		if (!isRed(x))
 			black--;
 		return isBalanced(x.left, black) && isBalanced(x.right, black);
-	} 
+	}
+
+	@Override
+	public int getHeight(K key)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Iterator<V> valuesInRange(K init, K end) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 
